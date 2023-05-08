@@ -1,27 +1,26 @@
-# quark
+# Clean Code Patterns course material
 
-Fundamental **TypeScript** project template
+Demo project and documentation for the Clean Code course.
 
-> Clone, fork or use as a template repository for creating your next **TypeScript** project.
+> Clone, fork or use as a template repository for practicing.
 
 ```bash
-git clone https://github.com/AlbertoBasalo/quark your-project
+git clone https://github.com/AlbertoBasalo/clean-lead your-project
 cd your-project
 npm install
 ```
 
 ## 🎯 Motivation
 
-Avoid start from an empty repository.
-
-Have a template to create _TypeScript_ repositories with a project already configured.
-
-A **boilerplate** ready to apply clean code techniques and testing.
+- Develop applications that are easy to maintain.
+- Reduce the bugs and facilitate their detection.
+- Distinguish good and bad programming practices.
 
 ### 📚 Documentation
 
-- [Workflows for develop, test and deploy](./docs/workflows.md)
-- [VS code Settings and Extensions](./docs/settings.md)
+- [Workflows for develop, test and deploy the practice](./docs/workflows.md)
+- [VS code Settings and Extensions for clean typescript](./docs/settings.md)
+- [Article series](./docs/articles.md)
 
 ---
 

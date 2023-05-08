@@ -1,20 +1,20 @@
 {
-  "name": "quark",
+  "name": "clean-lead",
   "version": "2.1.2",
-  "description": "Fundamental project template",
+  "description": "Clean Code Patterns course material (demo and docs)",
   "author": {
     "name": "Alberto Basalo",
     "email": "albertobasalo@hotmail.com",
     "url": "https://albertobasalo.dev"
   },
-  "homepage": "https://github.com/AlbertoBasalo/quark#readme",
+  "homepage": "https://github.com/AlbertoBasalo/clean-lead#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlbertoBasalo/quark.git"
+    "url": "git+https://github.com/AlbertoBasalo/clean-lead.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlbertoBasalo/quark/issues"
+    "url": "https://github.com/AlbertoBasalo/clean-lead/issues"
   },
   "scripts": {
     "prestart": "npm run build",
