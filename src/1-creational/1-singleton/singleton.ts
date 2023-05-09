@@ -2,7 +2,7 @@
 export class Logger {
   private static instance: Logger;
   entries: string[] = [];
-
+  // ToDo: alternatively, make the constructor private and add a static method to get the instance
   constructor() {
     if (Logger.instance) {
       // * return the existing instance
