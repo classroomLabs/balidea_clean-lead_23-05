@@ -1,8 +1,9 @@
 // * ✅ Singleton solution
 export class Logger {
+  // ToDo: alternatively, make the constructor private and add a static method to get the instance
   private static instance: Logger;
   entries: string[] = [];
-  // ToDo: alternatively, make the constructor private and add a static method to get the instance
+
   constructor() {
     if (Logger.instance) {
       // * return the existing instance
@@ -17,6 +18,7 @@ export class Logger {
     console.log(message);
   }
 }
+
 export class Application {
   logger = new Logger();
 
