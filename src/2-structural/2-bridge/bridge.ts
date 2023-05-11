@@ -1,26 +1,4 @@
 // * ✅ Bridge solution
-
-// * IMPLEMENTOR
-// * implementor interface
-export interface IPayment {
-  pay(amount: number): string;
-}
-// * concrete (refined) implementor
-export class PayPal implements IPayment {
-  public pay(amount: number): string {
-    console.log(`Paid ${amount} with PaymentPal`);
-    return `PayPalPaymentCode`;
-  }
-}
-
-export class Stripe implements IPayment {
-  public pay(amount: number): string {
-    console.log(`Paid ${amount} with Stripe`);
-    return `PayPalPaymentCode`;
-  }
-}
-// ToDo: add new payment method
-
 // * ABSTRACTION
 // * Abstraction interface
 export interface IEnrolment {
@@ -36,7 +14,7 @@ export abstract class EnrolmentBase implements IEnrolment {
   public abstract enrol(activityPrice: number, numPlaces: number): string;
 }
 // * concrete (refined) abstraction
-export class EnrolmentApp extends EnrolmentBase {
+export class EnrolmentLib extends EnrolmentBase {
   constructor() {
     super(new PayPal());
   }
@@ -46,10 +24,8 @@ export class EnrolmentApp extends EnrolmentBase {
     return paymentCode;
   }
 }
-
-// ToDo: add new enrolment service
-
-export class EnrolmentService extends EnrolmentBase {
+// * another concrete (refined) abstraction
+export class EnrolmentDiscountService extends EnrolmentBase {
   constructor() {
     super(new Stripe());
   }
@@ -59,12 +35,31 @@ export class EnrolmentService extends EnrolmentBase {
     return paymentCode;
   }
 }
+// * IMPLEMENTOR
+// * implementor interface
+export interface IPayment {
+  pay(amount: number): string;
+}
+// * concrete (refined) implementor
+export class PayPal implements IPayment {
+  public pay(amount: number): string {
+    console.log(`Paid ${amount} with PaymentPal`);
+    return `PayPalPaymentCode`;
+  }
+}
+// * another concrete (refined) implementor
+export class Stripe implements IPayment {
+  public pay(amount: number): string {
+    console.log(`Paid ${amount} with Stripe`);
+    return `PayPalPaymentCode`;
+  }
+}
 
+// consumer code
 export class Application {
   public static main(): void {
     // * 😏 easy to add new payment methods or new enrolment services
-    const payment = new PayPal();
-    const enrolment: IEnrolment = new EnrolmentApp(payment);
+    const enrolment: IEnrolment = new EnrolmentLib();
     const paymentCode = enrolment.enrol(100, 2);
     console.log(paymentCode);
   }

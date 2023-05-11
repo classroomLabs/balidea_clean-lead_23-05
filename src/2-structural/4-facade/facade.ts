@@ -4,13 +4,21 @@ import { Enrolment, Notification, Payment } from "./subsystem";
 // * Facade class
 export class EnrolmentFacade {
   public enrol(activityId: string, customerId: string, numPlaces: number): string {
-    const payment = new Payment();
     // * 😏 The complexity of the subsystem is hidden from the client code
-    const enrolment = new Enrolment(payment);
+    const enrolment = new Enrolment();
     const amount = enrolment.getPrice(activityId, numPlaces);
-    const enrolmentCode = enrolment.enrol(activityId, amount, numPlaces);
+    const payment = new Payment();
+    const paymentCode = payment.pay(amount);
+    const enrolmentCode = enrolment.enrol(activityId, paymentCode, numPlaces);
     new Notification().notify(customerId);
     return enrolmentCode;
+  }
+  public cancel(activityId: string, enrolmentCode: string): void {
+    // * 😏 The complexity of the subsystem is hidden from the client code
+    const enrolment = new Enrolment();
+    const refundCode = enrolment.cancel(activityId, enrolmentCode);
+    const payment = new Payment();
+    payment.refund(refundCode);
   }
 }
 
@@ -25,6 +33,12 @@ export class EnrolmentSystem {
     const enrolmentCode = enrolmentFacade.enrol(activityId, customerId, numPlaces);
     console.log("EnrolmentSystem: enrolment completed");
     return enrolmentCode;
+  }
+  public cancel(activityId: string, enrolmentCode: string): void {
+    const enrolmentFacade = new EnrolmentFacade();
+    // * 😏 The process is abstracted away from the client code
+    enrolmentFacade.cancel(activityId, enrolmentCode);
+    console.log("EnrolmentSystem: enrolment cancelled");
   }
 }
 
@@ -45,7 +59,8 @@ class AuthService {
   }
 }
 // * Facade class
-export class Logger {
+export class LoggerFacade {
+  // * 😏 dependencies are hidden from the client code
   private writer = new Writer();
   private formatter = new Formatter();
   private authService = new AuthService();
@@ -57,8 +72,8 @@ export class Logger {
   }
 }
 export class Application {
-  // reduce the number of dependencies
-  private logger = new Logger();
+  // reduce complexity and the number of dependencies
+  private logger = new LoggerFacade();
   doThings(): void {
     // * 😏 the client code does his job
     this.logger.log("Doing things");

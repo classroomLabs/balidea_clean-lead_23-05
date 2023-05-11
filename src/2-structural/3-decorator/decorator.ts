@@ -2,11 +2,9 @@
 
 // * original class not modified
 export class Enrolment {
-  organizer: string;
   enrol(activityId: string, customerId: string, numPlaces: number): string {
     const enrollment = `Enrolled ${customerId} in ${activityId} with ${numPlaces} places`;
     console.log(enrollment);
-    console.log(this.organizer);
     return enrollment;
   }
 }
@@ -28,14 +26,18 @@ export class EnrolmentDecorator implements Enrol, Cancel {
 
   // * The decorator class delegates the original functionality to the original class
   enrol(activityId: string, customerId: string, numPlaces: number): string {
+    this.notifyOrganizer(activityId);
     return this.enrolment.enrol(activityId, customerId, numPlaces);
   }
   // * 😏 The decorator class adds new functionality
   cancel(activityId: string, customerId: string): string {
     const cancellation = `Cancelled ${customerId} in ${activityId}`;
     console.log(cancellation);
-    console.log(this.enrolment.organizer);
+    this.notifyOrganizer(activityId);
     return cancellation;
+  }
+  private notifyOrganizer(activityId: string): void {
+    console.log(`Notified organizer of ${activityId}`);
   }
 }
 
