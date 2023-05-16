@@ -4,7 +4,7 @@ import { Enrolment, Notification, Payment } from "./subsystem";
 // * Facade class
 export class EnrolmentFacade {
   public enrol(activityId: string, customerId: string, numPlaces: number): string {
-    // * 😏 The complexity of the subsystem is hidden from the client code
+    // * 😏 The full complexity of the subsystem is hidden from the client code
     const enrolment = new Enrolment();
     const amount = enrolment.getPrice(activityId, numPlaces);
     const payment = new Payment();
@@ -13,10 +13,13 @@ export class EnrolmentFacade {
     new Notification().notify(customerId);
     return enrolmentCode;
   }
-  public cancel(activityId: string, enrolmentCode: string): void {
-    // * 😏 The complexity of the subsystem is hidden from the client code
+  public cancelEnrolment(activityId: string, enrolmentCode: string): string {
+    // * 😏 The inners of the subsystem are hidden from the client code
     const enrolment = new Enrolment();
     const refundCode = enrolment.cancel(activityId, enrolmentCode);
+    return refundCode;
+  }
+  public refundPayment(refundCode: string): void {
     const payment = new Payment();
     payment.refund(refundCode);
   }
@@ -36,8 +39,9 @@ export class EnrolmentSystem {
   }
   public cancel(activityId: string, enrolmentCode: string): void {
     const enrolmentFacade = new EnrolmentFacade();
-    // * 😏 The process is abstracted away from the client code
-    enrolmentFacade.cancel(activityId, enrolmentCode);
+    // * 😏 The process remains, but the complexity is hidden
+    const refundCode = enrolmentFacade.cancelEnrolment(activityId, enrolmentCode);
+    enrolmentFacade.refundPayment(refundCode);
     console.log("EnrolmentSystem: enrolment cancelled");
   }
 }
