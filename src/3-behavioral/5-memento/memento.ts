@@ -24,6 +24,7 @@ export class Activity {
     this.restoreState();
   }
   saveState() {
+    // * similar to a snapshot or prototype
     const state: ActivityState = {
       title: this.title,
       attendees: [...this.attendees],
@@ -46,7 +47,6 @@ type ActivityState = {
   title: string;
   attendees: string[];
   places: number;
-  // Suppose more state is added to the Activity class(money, date, etc.)
 };
 
 class ActivityMemento {
