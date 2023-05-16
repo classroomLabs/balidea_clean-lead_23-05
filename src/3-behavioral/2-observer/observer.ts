@@ -14,27 +14,27 @@ interface Observable {
 export class EventBus implements Observable {
   private subscriptions: Map<string, Observer[]> = new Map();
 
-  subscribe(eventName: string, listener: Observer): void {
-    let handlers = this.subscriptions.get(eventName);
-    if (!handlers) {
-      handlers = [];
-      this.subscriptions.set(eventName, handlers);
+  subscribe(eventName: string, handler: Observer): void {
+    let eventHandlers = this.subscriptions.get(eventName);
+    if (!eventHandlers) {
+      eventHandlers = [];
+      this.subscriptions.set(eventName, eventHandlers);
     }
-    handlers.push(listener);
+    eventHandlers.push(handler);
   }
 
-  unsubscribe(eventName: string, listener: Observer): void {
-    const handlers = this.subscriptions.get(eventName);
-    if (handlers) {
-      const index = handlers.indexOf(listener);
-      handlers.splice(index, 1);
+  unsubscribe(eventName: string, handler: Observer): void {
+    const eventHandlers = this.subscriptions.get(eventName);
+    if (eventHandlers) {
+      const index = eventHandlers.indexOf(handler);
+      eventHandlers.splice(index, 1);
     }
   }
 
   publish(eventName: string, eventArgs: object): void {
     const handlers = this.subscriptions.get(eventName);
     if (handlers) {
-      handlers.forEach(handler => handler(eventArgs));
+      handlers.forEach((handler) => handler(eventArgs));
     }
   }
 }

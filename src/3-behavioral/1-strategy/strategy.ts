@@ -43,7 +43,7 @@ export class ErrorLogStrategy implements LogStrategy {
 }
 
 export class Logger implements LogStrategy {
-  // *  😏 a map of strategies
+  // *  😏 a map of strategies (implicit factory)
   static strategies = new Map<LogLevel, LogStrategy>([
     ["info", new InfoLogStrategy()],
     ["warn", new WarnLogStrategy()],
