@@ -1,4 +1,4 @@
-import { LightBulb, LightOffCommand, LightOnCommand, RemoteControl } from "./command";
+import { LightBulb, LightOffCommand, LightOnCommand, RemoteControl } from "./command copy";
 
 describe("Command", () => {
   it("should turn on the light", () => {

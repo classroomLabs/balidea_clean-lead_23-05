@@ -2,87 +2,64 @@
 
 // * 😏 Command interface
 export interface Command {
-  execute(args?: unknown): void;
-  undo(): void;
+  execute(activity: string, participant: string): void;
+  // ToDo: add a unDo reDo methods
 }
 
 // * 😏 Concrete command class 1
-export class LightOnCommand implements Command {
-  constructor(private lightBulb: LightBulb) {}
-
-  execute(args?: number): void {
-    this.lightBulb.turnOn(args);
-  }
-
-  undo(): void {
-    this.lightBulb.turnOff();
+export class EnrollCommand implements Command {
+  constructor(private receiver: EnrolmentReceiver) {}
+  execute(activity: string, participant: string): void {
+    this.receiver.enroll(activity, participant);
+    // * 😏 Alternatively, we could implement the business logic here
   }
 }
 
 // * 😏 Concrete command class 2
-export class LightOffCommand implements Command {
-  constructor(private lightBulb: LightBulb) {}
-
-  execute(): void {
-    this.lightBulb.turnOff();
-  }
-
-  undo(): void {
-    this.lightBulb.turnOn();
+export class UnenrollCommand implements Command {
+  constructor(private receiver: EnrolmentReceiver) {}
+  execute(activity: string, participant: string): void {
+    this.receiver.unenroll(activity, participant);
   }
 }
 
-// * 😏 Invoker class
-export class RemoteControl {
-  private onCommand: Command;
-  private offCommand: Command;
+// * 😏 Custom Invoker class
+export class EnrolmentInvoker {
+  private receiver: EnrolmentReceiver = new EnrolmentReceiver();
+  constructor() {}
+  dispatchEnrollment(activity: string, participant: string): void {
+    const enrollCommand: Command = new EnrollCommand(this.receiver);
+    enrollCommand.execute(activity, participant);
+  }
+  dispatchUnEnrollment(activity: string, participant: string): void {
+    const unenrollCommand: Command = new UnenrollCommand(this.receiver);
+    unenrollCommand.execute(activity, participant);
+  }
+}
 
-  // ToDo: ad history of commands
+// * 😏 Generic Invoker class
+export class Invoker {
+  // ToDo: add a history of commands
   // ToDo: add serialization/deserialization for later or remote use
-
-  setOnCommand(command: Command): void {
-    this.onCommand = command;
-  }
-
-  setOffCommand(command: Command): void {
-    this.offCommand = command;
-  }
-
-  pressOnButton(brightness: number): void {
-    this.onCommand.execute(brightness);
-  }
-
-  pressOffButton(): void {
-    this.offCommand.execute();
+  constructor(private command: Command) {}
+  execute(activity: string, participant: string): void {
+    this.command.execute(activity, participant);
   }
 }
 
-// * 😏 Receiver class
-export class LightBulb {
-  private isOn = false;
-  private brightness = 0;
-
-  // * 😏 a business class not aware of the command pattern
-
-  turnOn(brightness = 10): void {
-    this.isOn = true;
-    this.brightness = brightness;
-    console.log("Light turned on, brightness", this.brightness);
+// * 😏 Receiver class (The business logic)
+export class EnrolmentReceiver {
+  enroll(activity: string, participant: string): void {
+    console.log(`Enrolling ${participant} in ${activity}`);
   }
 
-  turnOff(): void {
-    this.isOn = false;
-    this.brightness = 0;
-    console.log("Light turned off, brightness", this.brightness);
+  unenroll(activity: string, participant: string): void {
+    console.log(`Un-enrolling ${participant} in ${activity}`);
   }
 }
 
 // Usage
-const lightBulb = new LightBulb();
-const remoteControl = new RemoteControl();
-const lightOnCommand = new LightOnCommand(lightBulb);
-const lightOffCommand = new LightOffCommand(lightBulb);
-remoteControl.setOnCommand(lightOnCommand);
-remoteControl.setOffCommand(lightOffCommand);
-remoteControl.pressOnButton(6); // prints "Light turned on, brightness" 6
-remoteControl.pressOffButton(); // prints "Light turned off, brightness" 0
+const enrolmentInvoker: EnrolmentInvoker = new EnrolmentInvoker();
+enrolmentInvoker.dispatchEnrollment("Swimming", "John");
+enrolmentInvoker.dispatchEnrollment("Swimming", "Jane");
+enrolmentInvoker.dispatchUnEnrollment("Swimming", "Jane");
