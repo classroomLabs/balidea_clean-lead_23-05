@@ -39,11 +39,14 @@ export class EventBus implements Observable {
 
 // * 😏 the logger is an observer
 interface LoggerObserver {
-  log: Observer;
+  onBookingCreated: Observer;
 }
 class Logger implements LoggerObserver {
-  log(data: object): void {
-    console.log(data);
+  onBookingCreated: Observer = (data: object) => {
+    this.log(`Booking created: ${JSON.stringify(data)}`);
+  };
+  log(message: string): void {
+    console.log(message);
   }
 }
 
@@ -63,7 +66,7 @@ export class App {
     const agency = new Agency();
     const logger = new Logger();
     // * 😏 agency and logger are unrelated
-    agency.subscribe("booking-created", logger.log);
+    agency.subscribe("booking-created", logger.onBookingCreated);
     agency.addBooking({ trip: "Paris", price: 100 });
   }
 }

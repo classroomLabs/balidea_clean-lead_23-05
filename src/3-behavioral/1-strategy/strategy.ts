@@ -1,4 +1,4 @@
-// * ✅ Builder solution
+// * ✅ Strategy solution
 
 export type LogLevel = "info" | "debug" | "warn" | "error";
 export type LogEntry = { level: LogLevel; message: string };

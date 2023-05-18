@@ -1,8 +1,8 @@
 // ! ❌ Bad example not using an observable
 
 class Logger {
-  log(data: object): void {
-    console.log(data);
+  log(message: string): void {
+    console.log(message);
   }
 }
 
@@ -14,7 +14,7 @@ class Agency {
   addBooking(booking: object) {
     this.bookings.push(booking);
     // ! 😱 what if we want to send payment or messages or anything else?
-    this.logger.log({ event: "booking-created: ", data: booking });
+    this.logger.log(`Booking created: ${JSON.stringify(booking)}`);
   }
 }
 
