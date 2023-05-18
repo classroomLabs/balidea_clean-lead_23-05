@@ -8,7 +8,7 @@ export interface Command {
 
 // * 😏 Concrete command class 1
 export class EnrollCommand implements Command {
-  constructor(private receiver: EnrolmentReceiver) {}
+  constructor(private receiver: EnrolmentServiceReceiver) {}
   execute(activity: string, participant: string): void {
     this.receiver.enroll(activity, participant);
     // * 😏 Alternatively, we could implement the business logic here
@@ -17,16 +17,16 @@ export class EnrollCommand implements Command {
 
 // * 😏 Concrete command class 2
 export class UnenrollCommand implements Command {
-  constructor(private receiver: EnrolmentReceiver) {}
+  constructor(private receiver: EnrolmentServiceReceiver) {}
   execute(activity: string, participant: string): void {
     this.receiver.unenroll(activity, participant);
   }
 }
 
 // * 😏 Custom Invoker class
-export class EnrolmentInvoker {
-  private receiver: EnrolmentReceiver = new EnrolmentReceiver();
-  constructor() {}
+export class EnrolmentControllerInvoker {
+  private receiver: EnrolmentServiceReceiver = new EnrolmentServiceReceiver();
+
   dispatchEnrollment(activity: string, participant: string): void {
     const enrollCommand: Command = new EnrollCommand(this.receiver);
     enrollCommand.execute(activity, participant);
@@ -37,18 +37,8 @@ export class EnrolmentInvoker {
   }
 }
 
-// * 😏 Generic Invoker class
-export class Invoker {
-  // ToDo: add a history of commands
-  // ToDo: add serialization/deserialization for later or remote use
-  constructor(private command: Command) {}
-  execute(activity: string, participant: string): void {
-    this.command.execute(activity, participant);
-  }
-}
-
 // * 😏 Receiver class (The business logic)
-export class EnrolmentReceiver {
+export class EnrolmentServiceReceiver {
   enroll(activity: string, participant: string): void {
     console.log(`Enrolling ${participant} in ${activity}`);
   }
@@ -59,7 +49,17 @@ export class EnrolmentReceiver {
 }
 
 // Usage
-const enrolmentInvoker: EnrolmentInvoker = new EnrolmentInvoker();
+const enrolmentInvoker: EnrolmentControllerInvoker = new EnrolmentControllerInvoker();
 enrolmentInvoker.dispatchEnrollment("Swimming", "John");
 enrolmentInvoker.dispatchEnrollment("Swimming", "Jane");
 enrolmentInvoker.dispatchUnEnrollment("Swimming", "Jane");
+
+// * 😏 Generic Invoker class
+export class Invoker {
+  // ToDo: add a history of commands
+  // ToDo: add serialization/deserialization for later or remote use
+  constructor(private command: Command) {}
+  execute(activity: string, participant: string): void {
+    this.command.execute(activity, participant);
+  }
+}
