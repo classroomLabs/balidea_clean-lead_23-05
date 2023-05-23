@@ -5,6 +5,8 @@ class Logger {
   private formatter: Formatter | undefined;
   private writer: Writer | undefined;
 
+  constructor() {}
+
   setFormatter(formatter: Formatter): void {
     this.formatter = formatter;
   }
