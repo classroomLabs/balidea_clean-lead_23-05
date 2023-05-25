@@ -1,5 +1,5 @@
 {
-  "name": "clean-lead",
+  "name": "balidea-clean-lead",
   "version": "2.1.2",
   "description": "Clean Code Patterns course material (demo and docs)",
   "author": {
@@ -7,14 +7,14 @@
     "email": "albertobasalo@hotmail.com",
     "url": "https://albertobasalo.dev"
   },
-  "homepage": "https://github.com/AlbertoBasalo/clean-lead#readme",
+  "homepage": "https://github.com/classroomLabs/balidea_clean-lead_23-05#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlbertoBasalo/clean-lead.git"
+    "url": "git+https://github.com/classroomLabs/balidea_clean-lead_23-05.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlbertoBasalo/clean-lead/issues"
+    "url": "https://github.com/classroomLabs/balidea_clean-lead_23-05/issues"
   },
   "scripts": {
     "prestart": "npm run build",

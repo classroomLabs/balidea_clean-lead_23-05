@@ -5,8 +5,8 @@ Demo project and documentation for the Clean Code course.
 > Clone, fork or use as a template repository for practicing.
 
 ```bash
-git clone https://github.com/AlbertoBasalo/clean-lead your-project
-cd your-project
+git clone https://github.com/classroomLabs/balidea_clean-lead_23-05
+cd balidea_clean-lead_23-05
 npm install
 ```
 
