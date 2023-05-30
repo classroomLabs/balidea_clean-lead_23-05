@@ -42,6 +42,12 @@ export class ErrorLogStrategy implements LogStrategy {
   }
 }
 
+export class NothingLogStrategy implements LogStrategy {
+  log(entry: LogEntry) {
+    return "";
+  }
+}
+
 // *  😏 also the context implements the contract
 
 export class Logger implements LogStrategy {
@@ -73,6 +79,7 @@ class App {
     // *  😏 but, if you know, you change the strategy map at runtime
     Logger.strategies.set("debug", new DebugLogStrategy());
     this.logger.log({ level: "debug", message: "I was here" });
+    Logger.strategies.set("debug", new NothingLogStrategy());
     this.logger.log({ level: "warn", message: "Heads up" });
     this.logger.log({ level: "error", message: "Fatal exception" });
   }

@@ -1,11 +1,11 @@
 // * ✅ State solution
-type ActivityEnrollmentStateType = "Paying" | "Booking" | "Cancelling";
+type ActivityEnrollmentStateType = "Paying" | "Enrolling" | "Cancelling";
 
 // *  😏 an interface with the contract
 export interface ActivityEnrollmentState {
   state: ActivityEnrollmentStateType;
   pay(data: unknown): ActivityEnrollmentState;
-  book(data: unknown): ActivityEnrollmentState;
+  enroll(data: unknown): ActivityEnrollmentState;
   cancel(data: unknown): ActivityEnrollmentState;
 }
 
@@ -15,7 +15,7 @@ export abstract class ActivityEnrollmentStateBase implements ActivityEnrollmentS
   pay(data: unknown): ActivityEnrollmentState {
     throw new Error("Invalid in current state.");
   }
-  book(data: unknown): ActivityEnrollmentState {
+  enroll(data: unknown): ActivityEnrollmentState {
     throw new Error("Invalid in current state.");
   }
   cancel(data: unknown): ActivityEnrollmentState {
@@ -24,8 +24,8 @@ export abstract class ActivityEnrollmentStateBase implements ActivityEnrollmentS
 }
 
 export class BookingState extends ActivityEnrollmentStateBase {
-  state: ActivityEnrollmentStateType = "Booking";
-  book(data: unknown): ActivityEnrollmentState {
+  state: ActivityEnrollmentStateType = "Enrolling";
+  enroll(data: unknown): ActivityEnrollmentState {
     console.log("booking done : " + data);
     return new PayingState();
   }
@@ -52,12 +52,13 @@ export class ActivityEnrollment {
     let enrollmentState: ActivityEnrollmentState;
     let enrollment = { activity: "surfing", places: 2, amount: 100 };
     enrollmentState = new BookingState();
-    enrollmentState = enrollmentState.book(enrollment.places);
-    enrollmentState = enrollmentState.pay(enrollment.amount);
-    enrollmentState = enrollmentState.cancel(enrollment.activity);
-    // not allowed in any other order
-    // enrollmentState = enrollmentState.cancel(enrollment.activity);
+    enrollmentState.enroll(enrollment.places).pay(enrollment.amount).cancel(enrollment.activity);
+    // enrollmentState = enrollmentState.enroll(enrollment.places);
     // enrollmentState = enrollmentState.pay(enrollment.amount);
-    // enrollmentState = enrollmentState.book(enrollment.places);
+    // enrollmentState = enrollmentState.cancel(enrollment.activity);
+    // not allowed in any other order
+    enrollmentState = enrollmentState.cancel(enrollment.activity);
+    enrollmentState = enrollmentState.pay(enrollment.amount);
+    enrollmentState = enrollmentState.enroll(enrollment.places);
   }
 }

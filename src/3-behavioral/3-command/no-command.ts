@@ -34,3 +34,11 @@ export class PaymentService {
     console.log(`Refunding ${participant} for ${activity}`);
   }
 }
+
+export class Application {
+  main(): void {
+    const enrolmentController = new EnrolmentController();
+    enrolmentController.enroll("surfing", "John");
+    enrolmentController.unEnrollment("surfing", "John");
+  }
+}

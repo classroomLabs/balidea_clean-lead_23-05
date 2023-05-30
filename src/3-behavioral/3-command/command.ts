@@ -47,6 +47,20 @@ export interface Command<T> {
   execute(): void;
 }
 
+// { command: 'Enroll', payload: { participant: 'John', activity: 'surfing' }
+
+// <xml>
+//   <command>Enroll</command>
+//   <payload>
+//     <participant>John</participant>
+//     <activity>surfing</activity>
+//   </payload>
+// </xml>
+
+// command | payload
+// -----------------
+// Enroll  | { participant: 'John', activity: 'surfing' }
+
 // *  😏 abstract command class specifying the receiver and type of payload
 export abstract class AbstractCommand implements Command<Enrolment> {
   protected receiver: EnrolmentFacade = new EnrolmentFacade();
@@ -59,11 +73,11 @@ export abstract class AbstractCommand implements Command<Enrolment> {
 
 export class EnrollCommand extends AbstractCommand {
   command = "Enroll";
-
-  constructor(public payload: Enrolment) {
+  payload: Enrolment;
+  constructor(payload: Enrolment) {
     super();
+    this.payload = payload;
   }
-
   execute(): void {
     super.receiver.enroll(this.payload);
   }
@@ -71,7 +85,6 @@ export class EnrollCommand extends AbstractCommand {
 
 export class UnenrollCommand extends AbstractCommand {
   command = "Unenroll";
-
   constructor(public payload: Enrolment) {
     super();
   }
@@ -82,17 +95,24 @@ export class UnenrollCommand extends AbstractCommand {
 
 export class CommandProcessor {
   history: AbstractCommand[] = [];
+
   dispatch(command: AbstractCommand): void {
     console.log("CommandProcessor: Dispatching command", command);
     command.execute();
     this.history.push(command);
+    this.serialize(command);
     console.log("CommandProcessor: Command dispatched", command);
   }
+
   serialize(command: AbstractCommand): void {
     console.log("CommandProcessor: Serializing command", command);
+    const serialization = JSON.stringify(command);
+    console.log("CommandProcessor: Serialized command", serialization);
   }
+
   deserializeFactory(serialization: string): AbstractCommand {
     const commandData = JSON.parse(serialization);
+
     switch (commandData.command) {
       case "Enroll":
         return new EnrollCommand(commandData.payload);
