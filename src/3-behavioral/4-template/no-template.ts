@@ -30,7 +30,7 @@ export class EnrollmentService {
       const refundResult = "💸  Refunding Activity " + activity;
       businessResult = "😭  Unenrolled Activity " + refundResult;
       console.log("#️⃣ action done");
-      const notification = "📧 Activity booked " + businessResult;
+      const notification = "📧 Activity booked cancelled " + businessResult;
       console.log("#️⃣ notification sent");
     } catch (error) {
       console.error("#️⃣ 😵‍💫 error: " + error);
